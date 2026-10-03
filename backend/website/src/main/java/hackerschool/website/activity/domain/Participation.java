@@ -32,8 +32,7 @@ public class Participation{
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
-    @Column(nullable = false)
-    private LocalDateTime confirmedAt;
+    private LocalDateTime confirmedAt; // null until the participation is confirmed
 
 
     public Participation(Activity activity, Long clientId){
