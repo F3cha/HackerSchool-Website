@@ -78,6 +78,7 @@ public class Activity {
     @Column(nullable = false, length = 20)
     private ActivityStatus status = ActivityStatus.DRAFT;
 
+    @Setter
     @Column(updatable = false)
     private Long createdByAdminId; // Admin lives in the user module, so only the id is stored
 

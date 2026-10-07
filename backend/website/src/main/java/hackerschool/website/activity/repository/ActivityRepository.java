@@ -3,7 +3,9 @@ package hackerschool.website.activity.repository;
 import hackerschool.website.activity.domain.Activity;
 import hackerschool.website.activity.domain.ActivityStatus;
 import hackerschool.website.activity.domain.ParticipationStatus;
+import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -22,6 +24,11 @@ public interface ActivityRepository extends JpaRepository<Activity, Long> {
 
     // Admin view: every activity, newest first
     List<Activity> findAllByOrderByStartingTimeDesc();
+
+    // Loads the activity and locks its row until the transaction ends, so concurrent registrations queue up
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("select a from Activity a where a.id = :id")
+    Optional<Activity> findByIdForUpdate(@Param("id") Long id);
 
     // Free seats = capacity - participations with one of the given statuses.
     // Empty if the activity doesn't exist. Can be negative if capacity was lowered after people registered.
