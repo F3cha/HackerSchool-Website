@@ -27,9 +27,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         // Publicly allow users to read blog posts
                         .requestMatchers(HttpMethod.GET, "/api/blogposts/**").permitAll()
-                        //.requestMatchers("/login/**", "/oauth2/**").permitAll()
+                        .requestMatchers("/login/**", "/oauth2/**").permitAll()
 
                         .anyRequest().authenticated()
+                )
+                // Enable OAuth2 login support for FenixEdu
+                .oauth2Login(oauth2 -> oauth2
+                        .defaultSuccessUrl("/api/blogposts", true)
                 );
 
         return http.build();
