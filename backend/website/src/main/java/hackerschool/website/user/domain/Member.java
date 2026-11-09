@@ -15,19 +15,25 @@ import lombok.Setter;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends User {
 
-	@Column(unique = true, length = 32)
-	private String istId;
+
 
 	private String bio;
 
 	public Member(String name, String email, String istId, String bio) {
+		super(name, email, istId);
+		this.bio = bio;
+	}
+
+	public Member(String name, String email, String bio){
 		super(name, email);
-		this.istId = istId;
 		this.bio = bio;
 	}
 
 	@Override
 	public Role getRole() {
+		if (this.getIstId()==null){
+			return Role.EXTERNALMEMBER;
+		}
 		return Role.MEMBER;
 	}
 

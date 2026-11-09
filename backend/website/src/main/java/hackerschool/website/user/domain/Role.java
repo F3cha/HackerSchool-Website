@@ -6,5 +6,6 @@ package hackerschool.website.user.domain;
 public enum Role {
 	MEMBER,
 	ADMIN,
-	CLIENT
+	CLIENT,
+	EXTERNALMEMBER
 }

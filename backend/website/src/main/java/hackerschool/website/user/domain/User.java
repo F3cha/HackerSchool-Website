@@ -28,6 +28,12 @@ public abstract class User {
 	@Column(nullable = false, unique = true)
 	private String email;
 
+	@Column(nullable = false)
+	private String password; // Hashed password for local login
+
+	@Column(unique = true, length = 32, nullable = true)
+	private String istId;
+
 	/** Storage key of the profile photo. */
 	@Setter
 	private String photoPath;
@@ -35,9 +41,16 @@ public abstract class User {
 	@Column(nullable = false, updatable = false)
 	private Instant createdAt;
 
+	protected User(String name, String email, String istId) {
+		this.name = name;
+		this.email = email;
+		this.istId = istId;
+	}
+
 	protected User(String name, String email) {
 		this.name = name;
 		this.email = email;
+		this.istId = null;
 	}
 
 	@PrePersist

@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Admin extends User {
 
-	public Admin(String name, String email) {
-		super(name, email);
+	public Admin(String name, String email, String istId) {
+		super(name, email, istId);
 	}
 
 	@Override
