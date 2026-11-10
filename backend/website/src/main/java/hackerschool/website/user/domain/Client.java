@@ -14,12 +14,16 @@ import lombok.Setter;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Client extends User {
 
-	private String phoneNumber;
 
-	public Client(String name, String email, String phoneNumber) {
+	public Client(String name, String email, String phoneNumber, String istId) {
 		super(name, email);
-		this.phoneNumber = phoneNumber;
+
 	}
+
+	public Client(String name, String email, String phoneNumber){
+		super(name, email);
+	}
+
 
 	@Override
 	public Role getRole() {

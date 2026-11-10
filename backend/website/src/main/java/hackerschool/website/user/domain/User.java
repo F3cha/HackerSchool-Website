@@ -16,48 +16,57 @@ import java.time.Instant;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class User {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Setter
-	@Column(nullable = false)
-	private String name;
+    @Setter
+    @Column(nullable = false)
+    private String name;
 
-	@Setter
-	@Column(nullable = false, unique = true)
-	private String email;
+    @Setter
+    @Column(nullable = false, unique = true)
+    private String email;
 
-	@Column(nullable = false)
-	private String password; // Hashed password for local login
+    @Setter
+    @Column(nullable = false)
+    private String password; // Hashed password for local login
 
-	@Column(unique = true, length = 32, nullable = true)
-	private String istId;
+    @Column(unique = true, length = 32, nullable = true)
+    private String istId;
 
-	/** Storage key of the profile photo. */
-	@Setter
-	private String photoPath;
+    @Column(nullable = true, length = 13)
+    private String phoneNumber;
 
-	@Column(nullable = false, updatable = false)
-	private Instant createdAt;
+    /**
+     * Storage key of the profile photo.
+     */
+    @Setter
+    private String photoPath;
 
-	protected User(String name, String email, String istId) {
-		this.name = name;
-		this.email = email;
-		this.istId = istId;
-	}
+    @Column(nullable = false, updatable = false)
+    private Instant createdAt;
 
-	protected User(String name, String email) {
-		this.name = name;
-		this.email = email;
-		this.istId = null;
-	}
+    protected User(String name, String email, String istId) {
+        this.name = name;
+        this.email = email;
+        this.istId = istId;
+        this.phoneNumber = null;
+    }
 
-	@PrePersist
-	void onCreate() {
-		createdAt = Instant.now();
-	}
+    protected User(String name, String email) {
+        this.name = name;
+        this.email = email;
+        this.istId = null;
+        this.phoneNumber = null;
 
-	public abstract Role getRole();
+    }
+
+    @PrePersist
+    void onCreate() {
+        createdAt = Instant.now();
+    }
+
+    public abstract Role getRole();
 
 }
