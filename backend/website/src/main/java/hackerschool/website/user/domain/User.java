@@ -1,72 +1,72 @@
 package hackerschool.website.user.domain;
 
+import hackerschool.website.auth.domain.AuthUser;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 
 import java.time.Instant;
 
 @Entity
 @Table(name = "users")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "role", discriminatorType = DiscriminatorType.STRING, length = 20)
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class User {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Setter
     @Column(nullable = false)
     private String name;
 
-    @Setter
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Setter
-    @Column(nullable = false)
-    private String password; // Hashed password for local login
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private Role role; // Uses the external Role.java
 
-    @Column(unique = true, length = 32, nullable = true)
-    private String istId;
-
-    @Column(nullable = true, length = 13)
+    @Column(length = 20)
     private String phoneNumber;
 
-    /**
-     * Storage key of the profile photo.
-     */
-    @Setter
+    @Column(unique = true, length = 32)
+    private String istId;
+
+    @Column(columnDefinition = "TEXT")
+    private String bio;
+
     private String photoPath;
+
+    //@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, mappedBy = "user")
+    //private AuthUser authUser;
 
     @Column(nullable = false, updatable = false)
     private Instant createdAt;
 
-    protected User(String name, String email, String istId) {
+    @Builder
+    public User(String name, Role role, AuthUser authUser, String email, String istId, String photoPath, String phoneNumber, String bio) {
         this.name = name;
+        this.role = (role != null) ? role : Role.CLIENT;
         this.email = email;
         this.istId = istId;
-        this.phoneNumber = null;
+        this.photoPath = photoPath;
+        this.phoneNumber = phoneNumber;
+        this.bio = bio;
+      //  setAuthUser(authUser);
     }
 
-    protected User(String name, String email) {
-        this.name = name;
-        this.email = email;
-        this.istId = null;
-        this.phoneNumber = null;
-
-    }
+    //public void setAuthUser(AuthUser authUser) {
+      //  this.authUser = authUser;
+        //if (authUser != null) {
+         //   authUser.setUser(this);
+        //}
+    //}
 
     @PrePersist
     void onCreate() {
-        createdAt = Instant.now();
+        this.createdAt = Instant.now();
     }
-
-    public abstract Role getRole();
-
 }

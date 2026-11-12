@@ -17,24 +17,6 @@ public class Member extends User {
 
 
 
-	private String bio;
 
-	public Member(String name, String email, String istId, String bio) {
-		super(name, email, istId);
-		this.bio = bio;
-	}
-
-	public Member(String name, String email, String bio){
-		super(name, email);
-		this.bio = bio;
-	}
-
-	@Override
-	public Role getRole() {
-		if (this.getIstId()==null){
-			return Role.EXTERNALMEMBER;
-		}
-		return Role.MEMBER;
-	}
 
 }

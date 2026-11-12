@@ -15,19 +15,7 @@ import lombok.Setter;
 public class Client extends User {
 
 
-	public Client(String name, String email, String phoneNumber, String istId) {
-		super(name, email);
-
-	}
-
-	public Client(String name, String email, String phoneNumber){
-		super(name, email);
-	}
 
 
-	@Override
-	public Role getRole() {
-		return Role.CLIENT;
-	}
 
 }
